@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import axios from 'axios'
 import {Link, navigate} from '@reach/router';
 import {Container, Row, Col} from 'react-bootstrap'
+import io from 'socket.io-client';
 import PetForm from './PetForm';
 
 const AddPet = () => {
+    const [ socket ] = useState( () => io(":8000") )
     const [errors, setErrors] = useState({});
     const [pet, setPet] = useState({
         name:"",
@@ -24,6 +26,9 @@ const AddPet = () => {
                 if(res.data.errors) {
                     setErrors(res.data.errors);
                 } else {
+                    //send this to the server only
+                    socket.emit("added_new_pet", res.data);
+                    socket.disconnect();
                     navigate('/')
                 }
             })

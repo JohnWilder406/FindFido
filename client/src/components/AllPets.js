@@ -21,6 +21,20 @@ const AllPets = () => {
             console.log('we are connected!')
             console.log(socket.id)
         })
+
+        socket.on("added_pet", (data) => {
+            setPets( (currentPetValues) => [data, ...currentPetValues] )
+        })
+
+        socket.on("remove_pet", (id) => {
+            setPets( (currentPetValues) => {
+                let filteredPetsArray = currentPetValues.filter((pet) => {
+                    return pet._id !== id
+                });
+                return filteredPetsArray
+            })
+        })
+        return () => socket.disconnect();
     },[socket])
 
     useEffect(() => {

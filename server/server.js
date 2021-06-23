@@ -26,8 +26,13 @@ const io = socketio(server, {
 
 io.on("connection", (socket)=> {
     console.log('socket id:' + socket.id)
-    // socket.on("DELETE", data => {
-    //     socket.broadcast.emit("FILTER", data);
-    // });
+    socket.on("added_new_pet", data => {
+        console.log(data);
+        socket.broadcast.emit("added_pet", data);
+    });
+    socket.on("adopted_pet", id => {
+        console.log(id);
+        socket.broadcast.emit("remove_pet", id);
+    })
 });
 
