@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import {Link, navigate} from '@reach/router';
 import AdoptButton from './AdoptButton';
-import { Container, Card, Row, Col } from 'react-bootstrap';
+import { Container, Card, Row, Col, Button } from 'react-bootstrap';
 
 const PetDetail = (props) => {
     const {id} = props;
     const [pet, setPet] = useState({});
+    const [like, setLike] = useState();
+    const [isDisabled, setIsDisabled] = useState(false);
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/pets/' + id)
@@ -17,11 +19,28 @@ const PetDetail = (props) => {
             .catch((err) => {
                 console.log(err)
             })
-    }, [id]);
+            setLike(pet.likes)
+    }, [id, pet.likes]);
 
     const afterAdoptHandler = () => {
         navigate('/');
     }
+
+    const likePet = (e) => {
+        e.preventDefault();
+        setLike(like + 1);
+        setIsDisabled(true)
+    }
+
+    useEffect(() => {
+        axios.put('http://localhost:8000/api/pets/' + id, {likes: like})
+            .then((res) => {
+                console.log(res.data);
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [id, like])
 
     return (
         <Container>
@@ -74,6 +93,13 @@ const PetDetail = (props) => {
                         </Col>
                     </Row>
                 </Card.Body>
+                <Row>
+                {
+                    isDisabled ? <Button style={{width: "200px", marginLeft: "30px", marginBottom: "10px", marginRight: "20px"}} variant="success" onClick={(e)=>likePet(e)} disabled >Like {pet.name}</Button>
+                : <Button style={{width: "200px"}} variant="success" onClick={(e)=>likePet(e)}>Like {pet.name}</Button>
+                }
+                <Card.Text>{like} Like(s)</Card.Text> 
+                </Row>
             </Card>
         </Container>
     )

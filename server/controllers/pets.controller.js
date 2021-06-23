@@ -1,14 +1,15 @@
 const Pets = require("../models/pets.model");
 
 module.exports.createPet = (req,res) => {
-    const {name, type, description, skill1, skill2, skill3 } = req.body;
+    const {name, type, description, skill1, skill2, skill3, likes } = req.body;
     Pets.create({
         name,
         type,
         description,
         skill1,
         skill2,
-        skill3
+        skill3,
+        likes
     })
         .then(pet => res.json(pet))
         .catch(err => res.json(err))
@@ -27,7 +28,11 @@ module.exports.getPet = (req,res) => {
 }
 
 module.exports.updatePet = (req, res) => {
-    Pets.findOneAndUpdate({_id: req.params.id}, req.body, {new:true})
+    Pets.findOneAndUpdate({_id: req.params.id}, req.body, {
+        new:true,
+        runValidators: true,
+        context: "query"
+    })
         .then(updatedPet => res.json(updatedPet))
         .catch(err => res.json(err))
 }

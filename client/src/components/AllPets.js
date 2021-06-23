@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Link} from '@reach/router'
 import {Container, Table, Col, Row} from 'react-bootstrap'
+import io from 'socket.io-client';
 
 function Sort(array) {
     const sorted = array.sort((a,b) => (a.type > b.type) ? 1 : -1)
@@ -11,6 +12,16 @@ function Sort(array) {
 
 const AllPets = () => {
     const [pets, setPets] = useState([]);
+    const [ socket ] = useState( () => io(":8000") )
+
+    useEffect(() => {
+        console.log("inside of the useEffect for Socket.io-client")
+
+        socket.on("connect", () => {
+            console.log('we are connected!')
+            console.log(socket.id)
+        })
+    },[socket])
 
     useEffect(() => {
         axios.get('http://localhost:8000/api/pets')

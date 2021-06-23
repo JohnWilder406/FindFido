@@ -13,6 +13,7 @@ const AddPet = () => {
         skill1:"",
         skill2:"",
         skill3:"",
+        likes: 0
     })
 
     const handleSubmit = (e) => {
