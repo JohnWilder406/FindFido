@@ -9,8 +9,7 @@ import UpdatePet from './components/UpdatePet';
 
 
 
-function App(props) {
-  console.log(props)
+function App() {
   return (
     <div className="App">
       <Router>
