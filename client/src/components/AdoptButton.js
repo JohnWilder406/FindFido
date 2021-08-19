@@ -22,7 +22,7 @@ const AdoptButton = (props) => {
     }
 
     return (
-        <Button variant="danger" onClick={(e) => deleteHandler(e, id)}>Adopt {adoptLabel}</Button>
+        <Button variant="success" onClick={(e) => deleteHandler(e, id)}>Adopt {adoptLabel}</Button>
     )
 }
 

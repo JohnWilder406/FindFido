@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {Link} from '@reach/router'
-import {Container, Table, Col, Row} from 'react-bootstrap'
+import {Link, navigate} from '@reach/router'
+import {Container, Table, Col, Row, Button, Nav, Navbar} from 'react-bootstrap'
 import io from 'socket.io-client';
+import AdoptButton from './AdoptButton';
 
 function Sort(array) {
     const sorted = array.sort((a,b) => (a.type > b.type) ? 1 : -1)
@@ -48,6 +49,10 @@ const AllPets = () => {
             })
     }, []);
 
+    const afterAdoptHandler = () => {
+        console.log('Adopted!')
+    }
+
     const sortPets = Sort(pets)
 
 
@@ -55,14 +60,14 @@ const AllPets = () => {
         <Container>
             <Row>
                 <Col sm={8}>
-                    <h1 className="header">Pet Shelter</h1>
+                    <h1 className="header">A Home for Fido</h1>
                 </Col>
                 <Col sm={4}>
-                    <Link to="/pets/new" className="headlink" >add a pet to the shelter</Link>
+                <Button onClick={(e) => navigate('/pets/new')}>Add a Pet to our Shelter</Button>
                 </Col>
             </Row>
             <h2>These pets are looking for a good home</h2>
-            <Table bordered striped>
+            <Table bordered striped hover>
                 <thead>
                     <tr>
                         <td>Pet Name</td>
@@ -74,7 +79,7 @@ const AllPets = () => {
                     {
                         sortPets.map((pet, idx) => {
                             return (
-                                <tr key={idx}><td>{pet.name}</td><td>{pet.type}</td><td><Link to={'/pets/' + pet._id}>details</Link> | <Link to={'/pets/' + pet._id + '/edit'}>edit</Link></td></tr>
+                                <tr key={idx}><td>{pet.name}</td><td>{pet.type}</td><td><Button onClick={(e) => navigate('/pets/' + pet._id)}>Details</Button>  <Button onClick={(e) => navigate('/pets/' + pet._id + '/edit')}>Edit</Button><AdoptButton id={pet._id} afterAdoptHandler={afterAdoptHandler} adoptLabel={pet.name} /></td></tr>
                             )
                         })
                     }
