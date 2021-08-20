@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {Link, navigate} from '@reach/router'
-import {Container, Table, Col, Row, Button, Nav, Navbar} from 'react-bootstrap'
+import {Container, Table, Col, Row, Button, Nav, Navbar, Card} from 'react-bootstrap'
 import io from 'socket.io-client';
 import AdoptButton from './AdoptButton';
 
@@ -49,8 +49,13 @@ const AllPets = () => {
             })
     }, []);
 
-    const afterAdoptHandler = () => {
+    const afterAdoptHandler = (adoptedPet) => {
         console.log('Adopted!')
+        let filteredPetArray = pets.filter((pet) => {
+            return pet._id !== adoptedPet
+        })
+
+        setPets(filteredPetArray)
     }
 
     const sortPets = Sort(pets)
@@ -58,33 +63,35 @@ const AllPets = () => {
 
     return (
         <Container>
-            <Row>
-                <Col sm={8}>
-                    <h1 className="header">A Home for Fido</h1>
-                </Col>
-                <Col sm={4}>
-                <Button onClick={(e) => navigate('/pets/new')}>Add a Pet to our Shelter</Button>
-                </Col>
-            </Row>
-            <h2>These pets are looking for a good home</h2>
-            <Table bordered striped hover>
-                <thead>
-                    <tr>
-                        <td>Pet Name</td>
-                        <td>Type</td>
-                        <td>Actions</td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                        sortPets.map((pet, idx) => {
-                            return (
-                                <tr key={idx}><td>{pet.name}</td><td>{pet.type}</td><td><Button onClick={(e) => navigate('/pets/' + pet._id)}>Details</Button>  <Button onClick={(e) => navigate('/pets/' + pet._id + '/edit')}>Edit</Button><AdoptButton id={pet._id} afterAdoptHandler={afterAdoptHandler} adoptLabel={pet.name} /></td></tr>
-                            )
-                        })
-                    }
-                </tbody>
-            </Table>
+            <Navbar bg="primary" variant="dark">
+                <Navbar.Brand>Find Fido</Navbar.Brand>
+                <Nav className="mr-auto">
+                    <Button onClick={(e) => navigate('/pets/new')}>Add a Pet</Button>
+                </Nav>
+                {/* <Search searchQuery={searchQuery} onChange={updateInput} /> */}
+            </Navbar>
+            <Card>
+                <Card.Header className="text-center" as="h3">These pets are looking for a good home</Card.Header>
+                <Table bordered striped hover>
+                    <thead>
+                        <tr>
+                            <td>Pet Name</td>
+                            <td>Type</td>
+                            <td>Actions</td>
+                            <td>Adopt Pet</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            sortPets.map((pet, idx) => {
+                                return (
+                                    <tr key={idx}><td>{pet.name}</td><td>{pet.type}</td><td><Button style={{width: "200px"}}onClick={(e) => navigate('/pets/' + pet._id)}>Details</Button>  <Button style={{width: "200px", marginRight: "5px"}} onClick={(e) => navigate('/pets/' + pet._id + '/edit')}>Edit</Button></td><td><AdoptButton id={pet._id} afterAdoptHandler={afterAdoptHandler} adoptLabel={pet.name} /></td></tr>
+                                )
+                            })
+                        }
+                    </tbody>
+                </Table>
+            </Card>
         </Container>
     )
 }

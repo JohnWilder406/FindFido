@@ -22,7 +22,7 @@ const AdoptButton = (props) => {
     }
 
     return (
-        <Button variant="success" onClick={(e) => deleteHandler(e, id)}>Adopt {adoptLabel}</Button>
+        <Button style={{width: "200px"}} variant="success" onClick={(e) => deleteHandler(e, id)}>Adopt {adoptLabel}</Button>
     )
 }
 
