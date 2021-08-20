@@ -41,7 +41,7 @@ const PetForm = (props) => {
                 <Col>
                     <Form.Group className="mb-3">
                         <Form.Label column sm={4}>
-                            Skill:
+                            Skill #1:
                         </Form.Label>
                         <Col sm={10}>
                             <Form.Control
@@ -75,7 +75,7 @@ const PetForm = (props) => {
                 <Col>
                     <Form.Group className="mb-3">
                     <Form.Label column sm={4}>
-                        Skill:
+                        Skill #2:
                     </Form.Label>
                     <Col sm={10}>
                         <Form.Control
@@ -108,8 +108,8 @@ const PetForm = (props) => {
                 </Col>
                 <Col>
                     <Form.Group className="mb-3">
-                    <Form.Label column sm={2}>
-                        Skill:
+                    <Form.Label column sm={3}>
+                        Skill #3:
                     </Form.Label>
                     <Col sm={10}>
                     <Form.Control
@@ -122,7 +122,7 @@ const PetForm = (props) => {
                 </Col>
             </Row>
             <Form.Group as={Row}>
-            <Col sm={{span: 2, offset: 1}}>
+            <Col sm={{span: 3, offset: 1}}>
             <Button style={{width: "200px"}} type="submit">{submitLabel}</Button>
             </Col>
             </Form.Group>

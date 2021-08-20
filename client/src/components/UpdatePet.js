@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import {Link, navigate} from '@reach/router';
-import {Container, Row, Col} from 'react-bootstrap'
+import {Container, Row, Col, Nav, Navbar, Button} from 'react-bootstrap'
 import PetForm from './PetForm';
 
 const UpdatePet = (props) => {
@@ -38,19 +38,13 @@ const UpdatePet = (props) => {
 
     return (
     <Container>
-        <Row>
-            <Col sm={8}>
-                <h1 className="header">Pet Shelter</h1>
-            </Col>
-            <Col sm={4}>
-                <Link to="/" className="headlink" >back to home</Link>
-            </Col>
-        </Row>
-        <Row>
-            <Col sm={8}>
-                <h1>Edit {pet.name}</h1>
-            </Col>
-        </Row>
+            <Navbar bg="primary" variant="dark">
+                <Navbar.Brand>Find Fido</Navbar.Brand>
+                <Nav className="mr-auto">
+                    <Button onClick={(e) => navigate('/')}>Home</Button>
+                </Nav>
+                <Navbar.Brand>Update {pet.name}</Navbar.Brand>
+            </Navbar>
         <PetForm
             pet={pet}
             setPet={setPet}
