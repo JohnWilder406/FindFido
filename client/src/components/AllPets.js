@@ -6,6 +6,8 @@ import io from 'socket.io-client';
 import AdoptButton from './AdoptButton';
 import Search from './Search';
 
+
+// sort function for pet type
 function Sort(array) {
     const sorted = array.sort((a,b) => (a.type > b.type) ? 1 : -1)
 
@@ -18,6 +20,7 @@ const AllPets = () => {
     const [searchQuery, setSearchQuery] = useState();
     const [ socket ] = useState( () => io(":8000") )
 
+//socket.io function
     useEffect(() => {
         console.log("inside of the useEffect for Socket.io-client")
 
@@ -41,6 +44,7 @@ const AllPets = () => {
         return () => socket.disconnect();
     },[socket])
 
+    //database call for pet array
     useEffect(() => {
         axios.get('http://localhost:8000/api/pets')
             .then((res) => {
@@ -53,6 +57,7 @@ const AllPets = () => {
             })
     }, []);
 
+    //adopt button handler- deletes pet from page when adopted
     const afterAdoptHandler = (adoptedPet) => {
         console.log('Adopted!')
         let filteredPetArray = pets.filter((pet) => {
@@ -62,6 +67,7 @@ const AllPets = () => {
         setPets(filteredPetArray)
     }
 
+    //search filter- filters page to deliver search results
     const updateInput = async (searchQuery) => {
         const filtered = petsDefault.filter(pet => {
             if(pet.name.toLowerCase().includes(searchQuery.toLowerCase())) {
@@ -72,6 +78,7 @@ const AllPets = () => {
         setSearchQuery(searchQuery);
         setPets(filtered)
     }
+    //sort function call
     const sortPets = Sort(pets)
 
 

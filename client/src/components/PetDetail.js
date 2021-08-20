@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'
 import {Link, navigate} from '@reach/router';
 import AdoptButton from './AdoptButton';
-import { Container, Card, Row, Col, Button } from 'react-bootstrap';
+import { Container, Card, Row, Col, Button, Nav, Navbar, Table } from 'react-bootstrap';
 
 const PetDetail = (props) => {
     const {id} = props;
@@ -44,62 +44,43 @@ const PetDetail = (props) => {
 
     return (
         <Container>
-            <Row>
-                <Col sm={8}>
-                    <h1 className="header">Pet Shelter</h1>
-                </Col>
-                <Col sm={4}>
-                    <Link to="/" className="headlink" >back to home</Link>
-                </Col>
-            </Row>
-            <Row>
-            <Col sm={8}>
-            <h1>Details about:  {pet.name}</h1>
-            </Col>
-            <Col>
-            <AdoptButton 
+            <Navbar bg="primary" variant="dark">
+                <Navbar.Brand>Find Fido</Navbar.Brand>
+                <Nav className="mr-auto">
+                    <Button onClick={(e) => navigate('/')}>Home</Button>
+                </Nav>
+                {
+                    isDisabled ? <Button style={{width: "200px", marginLeft: "30px", marginRight: "20px"}} variant="success" onClick={(e)=>likePet(e)} disabled >Like {pet.name}</Button>
+                : <Button style={{width: "200px", marginLeft: "30px", marginRight: "20px"}} variant="success" onClick={(e)=>likePet(e)}>Like {pet.name}</Button>
+                }
+                <AdoptButton 
                 id={id}
                 afterAdoptHandler={afterAdoptHandler} 
                 adoptLabel={pet.name}
                 />
-            </Col>
-            </Row>
+            </Navbar>
             <Card className="border border-dark">
-                <Card.Body variant="flush" className="mb-3" >
-                    <Row>
-                        <Col sm={2}>
-                            <Card.Title>Type:</Card.Title>
-                        </Col>
-                        <Col>
-                            <Card.Text>{pet.type}</Card.Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={2}>
-                            <Card.Title>Description:</Card.Title>
-                        </Col>
-                        <Col>
-                            <Card.Text>{pet.description}</Card.Text>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col sm={2}>
-                            <Card.Title>Skills:</Card.Title>
-                        </Col>
-                        <Col>
-                            <Card.Text>{pet.skill1}</Card.Text>
-                            <Card.Text>{pet.skill2}</Card.Text>
-                            <Card.Text>{pet.skill3}</Card.Text>
-                        </Col>
-                    </Row>
+                    <Card.Header className="text-center" as={"h2"}> More about {pet.name}</Card.Header>
+                    <Card.Body variant="flush" className="mb-3 text-lg-center" >
+                    <Table bordered striped>
+                        <thead>
+                            <th>Animal Type</th>
+                            <th>Description</th>
+                            <th>Skill 1</th>
+                            <th>Skill 2</th>
+                            <th>Skill 3</th>
+                            <th>Likes</th>
+                        </thead>
+                        <tbody>
+                            <td>{pet.type}</td>
+                            <td>{pet.description}</td>
+                            <td>{pet.skill1}</td>
+                            <td>{pet.skill2}</td>
+                            <td>{pet.skill3}</td>
+                            <td>{like}</td>
+                        </tbody>
+                    </Table>
                 </Card.Body>
-                <Row>
-                {
-                    isDisabled ? <Button style={{width: "200px", marginLeft: "30px", marginBottom: "10px", marginRight: "20px"}} variant="success" onClick={(e)=>likePet(e)} disabled >Like {pet.name}</Button>
-                : <Button style={{width: "200px"}} variant="success" onClick={(e)=>likePet(e)}>Like {pet.name}</Button>
-                }
-                <Card.Text>{like} Like(s)</Card.Text> 
-                </Row>
             </Card>
         </Container>
     )
