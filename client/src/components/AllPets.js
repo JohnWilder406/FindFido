@@ -4,6 +4,7 @@ import {Link, navigate} from '@reach/router'
 import {Container, Table, Col, Row, Button, Nav, Navbar, Card} from 'react-bootstrap'
 import io from 'socket.io-client';
 import AdoptButton from './AdoptButton';
+import Search from './Search';
 
 function Sort(array) {
     const sorted = array.sort((a,b) => (a.type > b.type) ? 1 : -1)
@@ -13,6 +14,8 @@ function Sort(array) {
 
 const AllPets = () => {
     const [pets, setPets] = useState([]);
+    const [petsDefault, setPetsDefault] = useState([]);
+    const [searchQuery, setSearchQuery] = useState();
     const [ socket ] = useState( () => io(":8000") )
 
     useEffect(() => {
@@ -43,6 +46,7 @@ const AllPets = () => {
             .then((res) => {
                 console.log(res.data)
                 setPets(res.data)
+                setPetsDefault(res.data)
             })
             .catch((err) => {
                 console.log(err)
@@ -58,6 +62,16 @@ const AllPets = () => {
         setPets(filteredPetArray)
     }
 
+    const updateInput = async (searchQuery) => {
+        const filtered = petsDefault.filter(pet => {
+            if(pet.name.toLowerCase().includes(searchQuery.toLowerCase())) {
+                return pet.name.toLowerCase().includes(searchQuery.toLowerCase())
+            }
+        })
+
+        setSearchQuery(searchQuery);
+        setPets(filtered)
+    }
     const sortPets = Sort(pets)
 
 
@@ -68,7 +82,7 @@ const AllPets = () => {
                 <Nav className="mr-auto">
                     <Button onClick={(e) => navigate('/pets/new')}>Add a Pet</Button>
                 </Nav>
-                {/* <Search searchQuery={searchQuery} onChange={updateInput} /> */}
+                <Search searchQuery={searchQuery} onChange={updateInput} />
             </Navbar>
             <Card>
                 <Card.Header className="text-center" as="h3">These pets are looking for a good home</Card.Header>
