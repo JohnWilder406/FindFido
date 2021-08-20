@@ -4,6 +4,7 @@ import {Button, Container, Form, Row, Col} from 'react-bootstrap'
 const PetForm = (props) => {
     const {pet, setPet, errors, handleSubmit, submitLabel} = props;
 
+    //input handler
     const inputChange = (e) => {
         let newPet = { ...pet};
         if(e.target.name === "type") {
@@ -13,8 +14,6 @@ const PetForm = (props) => {
         }
         setPet(newPet)
     }
-
-    console.log(errors)
 
     return (
         <Container className="border border-dark">

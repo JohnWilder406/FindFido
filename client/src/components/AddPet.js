@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'
 import {Link, navigate} from '@reach/router';
-import {Container, Row, Col} from 'react-bootstrap'
+import {Container, Row, Col, Nav, Navbar, Button} from 'react-bootstrap'
 import io from 'socket.io-client';
 import PetForm from './PetForm';
 
@@ -18,6 +18,7 @@ const AddPet = () => {
         likes: 0
     })
 
+    //submit handler for adding pet- sends information to database and socket call
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.post('http://localhost:8000/api/pets', pet)
@@ -39,15 +40,13 @@ const AddPet = () => {
 
     return (
     <Container>
-        <Row>
-            <Col sm={8}>
-                <h1 className="header">Pet Shelter</h1>
-            </Col>
-            <Col sm={4}>
-                <Link to="/" className="headlink" >back to home</Link>
-            </Col>
-        </Row>
-        <h2>Add a new pet!</h2>
+        <Navbar bg="primary" variant="dark">
+                <Navbar.Brand>Find Fido</Navbar.Brand>
+                <Nav className="mr-auto">
+                    <Button onClick={(e) => navigate('/')}>Home</Button>
+                </Nav>
+                <Navbar.Brand>Add Pet to Database</Navbar.Brand>
+        </Navbar>
         <PetForm
             pet={pet}
             setPet={setPet}

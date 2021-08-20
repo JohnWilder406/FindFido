@@ -9,6 +9,7 @@ const UpdatePet = (props) => {
     const [errors, setErrors] = useState({});
     const [pet, setPet] = useState({})
 
+    // database call to get pet information
     useEffect(()=> {
         axios.get('http://localhost:8000/api/pets/' + id)
             .then((res) => {
@@ -20,6 +21,7 @@ const UpdatePet = (props) => {
             })
     }, [id])
 
+    //submit handler
     const handleSubmit = (e) => {
         e.preventDefault();
         axios.put('http://localhost:8000/api/pets/' + id, pet)

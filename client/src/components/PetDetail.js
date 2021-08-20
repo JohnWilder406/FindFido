@@ -10,6 +10,7 @@ const PetDetail = (props) => {
     const [like, setLike] = useState();
     const [isDisabled, setIsDisabled] = useState(false);
 
+    //database call to get pet information
     useEffect(() => {
         axios.get('http://localhost:8000/api/pets/' + id)
             .then((res) => {
@@ -22,16 +23,19 @@ const PetDetail = (props) => {
             setLike(pet.likes)
     }, [id, pet.likes]);
 
+    //adopt handler- navigates back to home
     const afterAdoptHandler = () => {
         navigate('/');
     }
 
+    //like function- adds like total to page
     const likePet = (e) => {
         e.preventDefault();
         setLike(like + 1);
         setIsDisabled(true)
     }
 
+    //like effect- updates database like total
     useEffect(() => {
         axios.put('http://localhost:8000/api/pets/' + id, {likes: like})
             .then((res) => {
